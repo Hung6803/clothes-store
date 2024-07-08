@@ -1,6 +1,9 @@
 from sqlalchemy import Column, String, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
 from app.database import Base
+from app.category.model import Category
+from app.inventory.model import Inventory
+from app.brand.model import Brand
 
 class Product(Base):
     __tablename__ = 'product'

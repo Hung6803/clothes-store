@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import Column, String, ForeignKey, Integer, Text, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base
+from app.employee.model import Employee
+from app.invoice_details.model import InvoiceDetails
 
 class Invoice(Base):
     __tablename__ = 'invoice'

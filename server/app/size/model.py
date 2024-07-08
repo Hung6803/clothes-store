@@ -9,7 +9,7 @@ class Size(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     size_name = Column(String(5))
 
-    inventory = relationship("Inventory", back_populates="size")
+    inventory = relationship('Inventory', back_populates="size")
 
     def __init__(self, size_name, *args, **kwargs):
         self.size_name = size_name

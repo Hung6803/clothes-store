@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Integer
 from sqlalchemy.orm import relationship
 from app.database import Base
 
+
 class Brand(Base):
     __tablename__ = 'brand'
 

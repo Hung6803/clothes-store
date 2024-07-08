@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 from app.account import router as account_router
+from app.brand import router as brand_router
+from app.category import router as category_router
+from app.size import router as size_router
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Clothes Store")
@@ -16,5 +20,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(account_router.router)
+app.include_router(brand_router.router)
+app.include_router(category_router.router)
+app.include_router(size_router.router)
 
 

@@ -1,18 +1,20 @@
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 from app.account import hashing
+from app.customer.model import Customer
+from app.employee.model import Employee
 
 class Account(Base):
     __tablename__ = 'account'
 
     email = Column(String(50), primary_key=True)
-    password = Column(String(20))
+    password = Column(String(100))
     role = Column(Boolean, default=False)
     createDate = Column(DateTime, default=datetime.utcnow)
 
-    customer = relationship("Customer", back_populates="account")
+    customer = relationship('Customer', back_populates="account")
     employee = relationship("Employee", back_populates="account")
 
     def __init__(self, email, password, role, *args, **kwargs):

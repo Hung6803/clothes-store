@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from app.database import Base
 
+
 class Employee(Base):
     __tablename__ = 'employee'
 
