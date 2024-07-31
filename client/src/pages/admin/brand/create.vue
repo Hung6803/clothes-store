@@ -2,16 +2,18 @@
   import {useMenu} from "@/store/use-menu-admin.js";
   import {message} from 'ant-design-vue';
   import {useRouter} from "vue-router";
+  import {reactive} from "vue";
 
   useMenu().onSelectKeys(["admin-brand"])
 
   const router = useRouter();
 
-  const brand = {
+  const brand = reactive({
     brand_name: "",
-  };
+  });
   const createBrand = () =>{
-    axios.post("http://127.0.0.1:8000/brand/create", brand)
+    axios.post("http://127.0.0.1:8000/brand/create", brand,{
+    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
         message.success("Tạo mới thành công!");

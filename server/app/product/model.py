@@ -18,7 +18,6 @@ class Product(Base):
     category = relationship('Category', back_populates='products')
     brand = relationship('Brand', back_populates='products')
     inventory = relationship('Inventory', back_populates='product')
-    invoice_details = relationship('InvoiceDetails', back_populates='product')
 
     def __init__(self, product_name, product_description, price, category_id, brand_id, *args, **kwargs):
         self.product_name = product_name

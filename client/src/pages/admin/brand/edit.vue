@@ -26,7 +26,8 @@
     })
   }
   const editBrand = () =>{
-    axios.put(`http://127.0.0.1:8000/brand/edit/${route.params.id}`, brand)
+    axios.put(`http://127.0.0.1:8000/brand/edit/${route.params.id}`, brand,{
+    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
         message.success("Sửa thông tin thành công!");

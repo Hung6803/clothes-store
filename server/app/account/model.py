@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy import Column, String, DateTime, Boolean, Integer
 from sqlalchemy.orm import relationship
 from app.database import Base
 from app.account import hashing
@@ -9,7 +9,8 @@ from app.employee.model import Employee
 class Account(Base):
     __tablename__ = 'account'
 
-    email = Column(String(50), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(50), unique=True, nullable=False)
     password = Column(String(100))
     role = Column(Boolean, default=False)
     createDate = Column(DateTime, default=datetime.utcnow)

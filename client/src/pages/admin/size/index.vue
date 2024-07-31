@@ -10,9 +10,8 @@
 
   const columns = [
       {
-        title: 'Mã',
-        dataIndex: 'id',
-        key: 'id',
+        title: 'STT',
+        key: 'index',
       },
       {
         title: 'Size',
@@ -32,6 +31,7 @@
         .then(function (response) {
           if (response.status === 200) {
             getSize();
+            message.success("Xóa thành công!")
           }
         })
         .catch(function (error) {
@@ -79,7 +79,10 @@
     <div class="row">
       <div class="col-12">
         <a-table :dataSource="size" :columns="columns" :scroll="{ x: 576}">
-          <template #bodyCell="{column, record}">
+          <template #bodyCell="{column, index, record}">
+            <template v-if="column.key==='index'">
+              <span>{{ index + 1 }}</span>
+            </template>
             <template v-if="column.key==='action'">
               <router-link :to="{ name: 'admin-size-edit', params: { id: record.id }}" >
                 <a-button type="primary" class="me-sm-2 mb-2">

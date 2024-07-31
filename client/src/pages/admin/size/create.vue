@@ -2,14 +2,15 @@
   import {useMenu} from "@/store/use-menu-admin.js";
   import {message} from 'ant-design-vue';
   import {useRouter} from "vue-router";
+  import {reactive} from "vue";
 
   useMenu().onSelectKeys(["admin-size"])
 
   const router = useRouter();
 
-  const size = {
+  const size = reactive({
     size_name: "",
-  };
+  });
   const createSize = () =>{
     axios.post("http://127.0.0.1:8000/size/create", size)
     .then(function (response) {

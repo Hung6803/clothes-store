@@ -6,13 +6,15 @@ from app.size.model import Size
 class Inventory(Base):
     __tablename__ = 'inventory'
 
-    product_id = Column(Integer, ForeignKey('product.id'), primary_key=True)
-    size_id = Column(Integer, ForeignKey('size.id'), primary_key=True)
-    import_price = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    product_id = Column(Integer, ForeignKey('product.id'))
+    size_id = Column(Integer, ForeignKey('size.id'))
+    import_price = Column(Integer)
     quantity = Column(Integer)
 
     product = relationship("Product", back_populates="inventory")
     size = relationship("Size", back_populates="inventory")
+    invoice_details = relationship('InvoiceDetails', back_populates='inventory')
 
     def __init__(self, product_id, size_id, import_price, quantity, *args, **kwargs):
         self.product_id = product_id

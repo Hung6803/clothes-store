@@ -8,7 +8,7 @@
       <a-sub-menu key="portfolio">
         <template #title><skin-outlined class="me-2"/>Danh mục</template>
         <a-menu-item key="admin-product">
-          <router-link :to="{ name: '' }">
+          <router-link :to="{ name: 'admin-product' }">
             <span>Sản phẩm</span>
           </router-link>
         </a-menu-item>
@@ -32,12 +32,12 @@
       <a-sub-menu key="account">
         <template #title><user-outlined class="me-2"/>Tài khoản</template>
         <a-menu-item key="admin-customer">
-          <router-link :to="{ name: '' }">
+          <router-link :to="{ name: 'admin-customer' }">
             <span>Khách hàng</span>
           </router-link>
         </a-menu-item>
         <a-menu-item key="admin-employee">
-          <router-link :to="{ name: '' }">
+          <router-link :to="{ name: 'admin-employee' }">
             <span>Nhân viên</span>
           </router-link>
         </a-menu-item>
@@ -45,6 +45,11 @@
 
       <a-sub-menu key="invoice">
         <template #title><shopping-outlined class="me-2"/>Hóa đơn</template>
+        <a-menu-item key="admin-inventory">
+          <router-link :to="{ name: 'admin-inventory' }">
+            <span>Quản lý kho</span>
+          </router-link>
+        </a-menu-item>
         <a-menu-item key="admin-invoice-new">
           <router-link :to="{ name: '' }">
             <span>Hóa đơn mới</span>

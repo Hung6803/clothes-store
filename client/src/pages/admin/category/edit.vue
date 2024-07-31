@@ -26,7 +26,8 @@
     })
   }
   const editCategory = () =>{
-    axios.put(`http://127.0.0.1:8000/category/edit/${route.params.id}`, category)
+    axios.put(`http://127.0.0.1:8000/category/edit/${route.params.id}`, category,{
+    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
         message.success("Sửa thông tin thành công!");
