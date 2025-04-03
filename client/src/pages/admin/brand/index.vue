@@ -2,7 +2,8 @@
   import {useMenu} from "@/store/use-menu-admin.js";
   import {ref, createVNode} from "vue";
   import {ExclamationCircleOutlined} from "@ant-design/icons-vue";
-  import {message, Modal} from 'ant-design-vue';
+  import {message, Modal} from "ant-design-vue";
+
 
   useMenu().onSelectKeys(["admin-brand"])
 
@@ -68,7 +69,7 @@
 
 <template>
   <a-card title="Thương hiệu" style="width: 100%">
-    <div class="row md-3">
+    <div class="row mb-3">
       <div class="col-12 d-flex justify-content-end">
         <a-button type="primary">
           <router-link :to="{name: 'admin-brand-create'}">

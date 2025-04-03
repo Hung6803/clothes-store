@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 from app.product.schema import ProductName
 from app.size.schema import DisplaySize
@@ -11,7 +13,6 @@ class Inventory(BaseModel):
 
 
 class DisplayInventory(BaseModel):
-    id: int
     product: ProductName
     size: DisplaySize
     import_price: int
@@ -19,3 +20,22 @@ class DisplayInventory(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class DisplayProductSize(BaseModel):
+    product: ProductName
+    sizes: List[DisplaySize]
+    quantity: int
+
+    class Config:
+        from_attributes = True
+
+
+class InventoryUpdate(BaseModel):
+    import_price: int
+    quantity: int
+
+
+class InventorySchema(BaseModel):
+    product: ProductName
+    size: DisplaySize

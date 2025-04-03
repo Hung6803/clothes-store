@@ -12,8 +12,9 @@ class Invoice(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     total_price = Column(Integer)
     payment_type = Column(String(50))
+    address = Column(String(100))
     creation_date = Column(DateTime, default=datetime.utcnow)
-    status = Column(String(20))
+    status = Column(Integer)
     employee_id = Column(Integer, ForeignKey('employee.id'))
     customer_id = Column(Integer, ForeignKey('customer.id'))
 
@@ -21,9 +22,10 @@ class Invoice(Base):
     customer = relationship('Customer', back_populates='invoices')
     invoice_details = relationship('InvoiceDetails', back_populates='invoice')
 
-    def __init__(self, total_price, payment_type, status, employee_id, customer_id, *args, **kwargs):
+    def __init__(self, total_price, payment_type, address, status, employee_id, customer_id, *args, **kwargs):
         self.total_price = total_price
         self.payment_type = payment_type
+        self.address = address
         self.status = status
         self.employee_id = employee_id
         self.customer_id = customer_id

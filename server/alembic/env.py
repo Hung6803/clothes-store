@@ -28,6 +28,7 @@ from app.employee.model import Employee
 from app.customer.model import Customer
 from app.invoice.model import Invoice
 from app.invoice_details.model import InvoiceDetails
+from app.image.model import ProductImage
 
 # add your model's MetaData object here
 # for 'autogenerate' support

@@ -10,26 +10,31 @@ router = APIRouter(tags=['Inventory'], prefix='/inventory')
 
 
 @router.get('/', response_model=List[schema.DisplayInventory])
-async def get_all_inventory(database: Session = Depends(database.get_db)):
-    return services.get_all_inventory(database)
+async def get_all_inventory(db: Session = Depends(database.get_db)):
+    return services.get_all_inventory(db)
 
 
 @router.post('/create', status_code=status.HTTP_201_CREATED)
-async def create_inventory(request: schema.Inventory, database: Session = Depends(database.get_db)):
-    new_inventory = services.create_inventory(request=request, database=database)
+async def create_inventory(request: schema.Inventory, db: Session = Depends(database.get_db)):
+    new_inventory = services.create_inventory(request=request, database=db)
     return new_inventory
 
 
-@router.put('/edit/{inventory_id}', response_class=Response)
-async def edit_inventory(inventory_id: int, request: schema.Inventory, database: Session = Depends(database.get_db)):
-    return services.edit_inventory(inventory_id, request, database)
+@router.put('/edit/{product_id}/{size_id}', response_class=Response)
+async def edit_inventory(product_id: int, size_id: int, request: schema.InventoryUpdate, db: Session = Depends(database.get_db)):
+    return services.edit_inventory(product_id, size_id, request, db)
 
 
-@router.get('/{inventory_id}', response_model=schema.DisplayInventory)
-async def get_inventory_by_id(inventory_id, database: Session = Depends(database.get_db)):
-    return services.get_inventory_by_id(inventory_id, database)
+@router.get('/{product_id}/{size_id}', response_model=schema.DisplayInventory)
+async def get_inventory_by_id(product_id: int, size_id: int, db: Session = Depends(database.get_db)):
+    return services.get_inventory_by_id(product_id, size_id, db)
 
 
-@router.delete('/{inventory_id}', response_class=Response)
-async def delete_inventory(inventory_id: int, database: Session = Depends(database.get_db)):
-    return services.delete_inventory(inventory_id, database)
+@router.get('/{product_id}', response_model=schema.DisplayProductSize)
+async def get_inventory_by_product_id(product_id: int, db: Session = Depends(database.get_db)):
+    return services.get_inventory_by_product_id(product_id, db)
+
+
+@router.delete('/{product_id}/{size_id}', response_class=Response)
+async def delete_inventory(product_id: int, size_id: int, db: Session = Depends(database.get_db)):
+    return services.delete_inventory(product_id, size_id, db)

@@ -9,6 +9,14 @@ class Account(BaseModel):
     role: bool
 
 
+class AccountID(BaseModel):
+    id: int
+    role: bool
+
+    class Config:
+        from_attributes = True
+
+
 class AccountUpdate(BaseModel):
     email: EmailStr
     password: str

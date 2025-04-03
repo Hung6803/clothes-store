@@ -25,5 +25,10 @@ class Customer(Base):
         self.date_of_birth = datetime.date(date_of_birth)
         self.account_id = account_id
 
+    def __init__(self, name, phone_number, address, *args, **kwargs):
+        self.name = name
+        self.phone_number = phone_number
+        self.address = address
+
     def __str__(self):
         return f'{self.name}'

@@ -1,5 +1,6 @@
 
 <template>
+
   <div class="container-fluid">
     <div class="row text-white header-background">
       <div class="col-1 d-flex d-sm-none align-items-center justify-content-center">
@@ -7,7 +8,7 @@
       </div>
       
       <div class="col-10 col-sm-9 d-flex align-items-center justify-content-center justify-content-sm-start">
-        <img src="../assets/logo.jpg" alt="logo" class="logo ms-3 me-3"/>
+        <img src="../assets/img/logo.png" alt="logo" class="logo ms-3 me-3"/>
         <span class="d-none d-sm-flex">ADMIN</span>
       </div>
 

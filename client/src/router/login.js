@@ -4,7 +4,7 @@ const login = [
         component: () => import("../layouts/login.vue"),
         children: [
             {
-                path:"login",
+                path:"",
                 name: "login",
                 component: () => import("../pages/login/index.vue"),
             },

@@ -68,7 +68,7 @@
 
 <template>
   <a-card title="Kiểu dáng" style="width: 100%">
-    <div class="row md-3">
+    <div class="row mb-3">
       <div class="col-12 d-flex justify-content-end">
         <a-button type="primary">
           <router-link :to="{name: 'admin-category-create'}">

@@ -13,8 +13,6 @@
     brand_name: "",
   });
 
-
-
   const getBrandbyID = () =>{
     axios.get(`http://127.0.0.1:8000/brand/${route.params.id}`)
     .then(function (response) {

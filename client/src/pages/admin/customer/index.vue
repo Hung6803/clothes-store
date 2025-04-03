@@ -81,8 +81,11 @@
     axios.get('http://127.0.0.1:8000/customer/')
       .then(function (response) {
         customers.value = response.data;
-        customers.value[0].date_of_birth = dayjs(customers.value[0].date_of_birth).format('DD-MM-YYYY');
-        customers.value[0].account.createDate = dayjs(customers.value[0].account.createDate).format('DD-MM-YYYY');
+        for(let index = 0; index < customers.value.length; index++)
+        {
+          customers.value[index].date_of_birth = dayjs(customers.value[index].date_of_birth).format('DD-MM-YYYY');
+          customers.value[index].account.createDate = dayjs(customers.value[index].account.createDate).format('DD-MM-YYYY');
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -95,7 +98,7 @@
 
 <template>
   <a-card title="Khách hàng" style="width: 100%">
-    <div class="row md-3">
+    <div class="row mb-3">
       <div class="col-12 d-flex justify-content-end">
         <a-button type="primary">
           <router-link :to="{name: 'admin-customer-create'}">

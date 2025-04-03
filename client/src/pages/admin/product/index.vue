@@ -14,6 +14,10 @@
       key: 'index',
     },
     {
+      title: 'Ảnh sản phẩm',
+      key: 'product_image',
+    },
+    {
       title: 'Tên sản phẩm',
       dataIndex: 'product_name',
       key: 'product_name',
@@ -32,6 +36,11 @@
       title: 'Giá bán',
       dataIndex: 'price',
       key: 'price',
+    },
+    {
+      title: 'Giảm giá',
+      dataIndex: 'discount',
+      key: 'discount',
     },
     {
       title: 'Mô tả',
@@ -87,7 +96,7 @@
 
 <template>
   <a-card title="Sản phẩm" style="width: 100%">
-    <div class="row md-3">
+    <div class="row mb-3">
       <div class="col-12 d-flex justify-content-end">
         <a-button type="primary">
           <router-link :to="{name: 'admin-product-create'}">
@@ -102,6 +111,9 @@
           <template #bodyCell="{column, index, record}">
             <template v-if="column.key==='index'">
               <span>{{ index + 1 }}</span>
+            </template>
+            <template v-if="column.key==='product_image'">
+              <img :width="60" :height="100" :src="`http://127.0.0.1:8000/image/${record.product_image.image_path}`" alt="Product Image">
             </template>
             <template v-if="column.key==='action'">
               <router-link :to="{ name: 'admin-product-edit', params: { id: record.id }}" >

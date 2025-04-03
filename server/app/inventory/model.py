@@ -3,12 +3,12 @@ from sqlalchemy.orm import relationship
 from app.database import Base
 from app.size.model import Size
 
+
 class Inventory(Base):
     __tablename__ = 'inventory'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    product_id = Column(Integer, ForeignKey('product.id'))
-    size_id = Column(Integer, ForeignKey('size.id'))
+    product_id = Column(Integer, ForeignKey('product.id'), primary_key=True)
+    size_id = Column(Integer, ForeignKey('size.id'), primary_key=True)
     import_price = Column(Integer)
     quantity = Column(Integer)
 

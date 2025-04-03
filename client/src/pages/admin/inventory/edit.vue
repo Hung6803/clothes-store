@@ -19,7 +19,7 @@
   const products = ref([]);
   const size = ref([]);
   const getInventorybyID = () =>{
-    axios.get(`http://127.0.0.1:8000/inventory/${route.params.id}`)
+    axios.get(`http://127.0.0.1:8000/inventory/${route.params.product_id}/${route.params.size_id}`)
     .then(function (response) {
       inventory.product_id = response.data.product.id;
       inventory.size_id = response.data.size.id;
@@ -32,7 +32,7 @@
   };
 
   const editInventory = () =>{
-    axios.put(`http://127.0.0.1:8000/inventory/edit/${route.params.id}`, inventory,{
+    axios.put(`http://127.0.0.1:8000/inventory/edit/${route.params.product_id}/${route.params.size_id}`, inventory,{
     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {

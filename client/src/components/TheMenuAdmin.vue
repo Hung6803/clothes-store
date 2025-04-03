@@ -51,12 +51,12 @@
           </router-link>
         </a-menu-item>
         <a-menu-item key="admin-invoice-new">
-          <router-link :to="{ name: '' }">
+          <router-link :to="{ name: 'admin-invoice-new' }">
             <span>Hóa đơn mới</span>
           </router-link>
         </a-menu-item>
         <a-menu-item key="admin-invoice">
-          <router-link :to="{ name: '' }">
+          <router-link :to="{ name: 'admin-invoice' }">
             <span>Danh sách hóa đơn</span>
           </router-link>
         </a-menu-item>

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router/index.js'
-import { DatePicker, Select, InputNumber, Dropdown, Checkbox, InputPassword, Menu, Input, Table, Card, Drawer, Button, message} from "ant-design-vue"
+import { Slider, Upload, Modal, DatePicker, Select, InputNumber, Dropdown, Checkbox, InputPassword, Menu, Input, Table, Card, Drawer, Button, message} from "ant-design-vue"
 
 import axios from 'axios'
 window.axios = axios;
@@ -25,6 +25,8 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(pinia)
 app.use(router)
 app.use(Card)
+app.use(Upload)
+app.use(Modal)
 app.use(DatePicker)
 app.use(Select)
 app.use(Dropdown)
@@ -36,6 +38,7 @@ app.use(InputNumber)
 app.use(Table)
 app.use(Drawer)
 app.use(Button)
+app.use(Slider)
 app.mount('#app')
 
 app.config.globalProperties.$message = message

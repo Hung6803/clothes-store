@@ -19,6 +19,15 @@ def create_customer(request, database):
     return {'msg': 'success'}
 
 
+def create_customer_no_account(request, database):
+    new_customer = model.Customer(name=request.name, phone_number=request.phone_number, address=request.address)
+    database.add(new_customer)
+    database.commit()
+    database.refresh(new_customer)
+
+    return new_customer
+
+
 def edit_customer(customer_id, request, database):
     database.query(model.Customer).filter(model.Customer.id == customer_id).update(request)
     database.commit()

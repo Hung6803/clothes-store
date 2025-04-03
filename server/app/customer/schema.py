@@ -25,6 +25,22 @@ class CustomerCreate(CustomerBase):
     role: bool = False
 
 
+class CustomerCreateNoAccount(BaseModel):
+    name: constr(min_length=1)
+    phone_number: constr(min_length=10, max_length=10)
+    address: constr(min_length=1)
+
+
+class DisplayCustomerCreateNoAccount(BaseModel):
+    id: int
+    name: str
+    phone_number: str
+    address: str
+
+    class Config:
+        from_attributes = True
+
+
 class CustomerUpdate(CustomerBase):
     name: constr(min_length=1)
     phone_number: constr(min_length=10, max_length=10)
@@ -39,3 +55,7 @@ class DisplayCustomer(CustomerBase):
     class Config:
         from_attributes = True
 
+
+class CustomerInvoice(BaseModel):
+    id: int
+    name: str

@@ -4,6 +4,16 @@ const admin = [
         component: () => import("../layouts/admin.vue"),
         children: [
             {
+                path:"invoice/new",
+                name: "admin-invoice-new",
+                component: () => import("../pages/admin/invoice/new.vue"),
+            },
+            {
+                path:"invoice",
+                name: "admin-invoice",
+                component: () => import("../pages/admin/invoice/index.vue"),
+            },
+            {
                 path:"employee",
                 name: "admin-employee",
                 component: () => import("../pages/admin/employee/index.vue"),
@@ -14,7 +24,7 @@ const admin = [
                 component: () => import("../pages/admin/employee/create.vue"),
             },
             {
-                path:"employee:id/edit",
+                path:"employee/:id/edit",
                 name: "admin-employee-edit",
                 component: () => import("../pages/admin/employee/edit.vue"),
             },
@@ -29,7 +39,7 @@ const admin = [
                 component: () => import("../pages/admin/customer/create.vue"),
             },
             {
-                path:"customer:id/edit",
+                path:"customer/:id/edit",
                 name: "admin-customer-edit",
                 component: () => import("../pages/admin/customer/edit.vue"),
             },
@@ -44,7 +54,7 @@ const admin = [
                 component: () => import("../pages/admin/inventory/create.vue"),
             },
             {
-                path:"inventory:id/edit",
+                path:"inventory/:product_id/:size_id/edit",
                 name: "admin-inventory-edit",
                 component: () => import("../pages/admin/inventory/edit.vue"),
             },
