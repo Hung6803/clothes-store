@@ -8,7 +8,7 @@ def get_all_invoice(database):
     return invoices
 
 
-def create_invoice(request, database):
+def create_invoice(request, database) -> model.Invoice:
     new_invoice = model.Invoice(total_price=request.total_price, payment_type=request.payment_type,
                                 status=request.status, address=request.address, employee_id=request.employee_id,
                                 customer_id=request.customer_id)
@@ -16,7 +16,7 @@ def create_invoice(request, database):
     database.commit()
     database.refresh(new_invoice)
 
-    return {'msg': 'success'}
+    return new_invoice
 
 
 def edit_status(request, database):

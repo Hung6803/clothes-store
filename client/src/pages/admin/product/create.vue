@@ -55,7 +55,6 @@
   };
 
   getCategory();
-
   getBrand();
 
 function getBase64(file) {

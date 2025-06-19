@@ -19,11 +19,8 @@ async def login(request: OAuth2PasswordRequestForm = Depends(), db: Session = De
             status_code=400,
             detail='Email or password is incorrect'
         )
-    if account.role:
-        access_token = token.create_access_token(data={"sub": account.email})
-        return schema.Token(access_token=access_token, token_type="bearer")
-    else:
-        return schema.AccountID(id=account.id, role=account.role)
+    access_token = token.create_access_token(data={"sub": account.email, "role": account.role})
+    return schema.Token(access_token=access_token, token_type="bearer")
 
 
 @router.post('/register', status_code=status.HTTP_201_CREATED)
@@ -45,3 +42,6 @@ async def edit_account(account_id: int, request: schema.AccountUpdate, db: Sessi
     return services.edit_account(account_id, request, db)
 
 
+@router.get('/me', response_model=schema.TokenData)
+async def read_users_me(current_user: Account = Depends(get_current_user)):
+    return current_user

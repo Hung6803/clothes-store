@@ -6,7 +6,9 @@ export const useCartStore = defineStore('cart', () => {
 
   // Thêm sản phẩm vào giỏ hàng
   const addProduct = (product) => {
-    const index = selectedProducts.value.findIndex((p) => p.id === product.id)
+    const index = selectedProducts.value.findIndex(
+      (p) => p.id === product.id && p.size_id === product.size_id
+    )
     if (index === -1) {
       selectedProducts.value.push({ ...product})
     } else {
@@ -15,16 +17,41 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // Xóa sản phẩm khỏi giỏ hàng
-  const removeProduct = (productId) => {
-    selectedProducts.value = selectedProducts.value.filter((p) => p.id !== productId)
+  const removeProduct = (productId, sizeId) => {
+    const index = selectedProducts.value.findIndex(
+      (p) => p.id === productId && p.size_id === sizeId
+    )
+    if (index !== -1) {
+      selectedProducts.value.splice(index, 1)
+    }
   }
 
   // Tăng giảm số lượng sản phẩm
-  const updateQuantity = (productId, quantity) => {
-    const index = selectedProducts.value.findIndex((p) => p.id === productId)
+  const updateQuantity = (productId, sizeId, quantity) => {
+    const index = selectedProducts.value.findIndex(
+      (p) => p.id === productId && p.size_id === sizeId
+    )
     if (index !== -1) {
       if (selectedProducts.value[index].total_quantity >= quantity) {
         selectedProducts.value[index].quantity = quantity > 0 ? quantity : 1
+      }
+    }
+  }
+
+  const updateSize = (productId, oldSizeId, newSizeId) => {
+    const index = selectedProducts.value.findIndex(
+        (p) => p.id === productId && p.size_id === oldSizeId)
+    if (index !== -1) {
+      const existingIndex = selectedProducts.value.findIndex(
+        (p) => p.id === productId && p.size_id === newSizeId
+      )
+
+      // Nếu sản phẩm cùng size mới đã tồn tại → gộp số lượng
+      if (existingIndex !== -1) {
+        selectedProducts.value[existingIndex].quantity += selectedProducts.value[index].quantity
+        selectedProducts.value.splice(index, 1)
+      } else {
+        selectedProducts.value[index].size_id = newSizeId
       }
     }
   }
@@ -41,5 +68,5 @@ export const useCartStore = defineStore('cart', () => {
     }, 0)
   )
 
-  return { selectedProducts, addProduct, removeProduct, updateQuantity, totalItems, totalPrice }
+  return { selectedProducts, addProduct, removeProduct, updateQuantity, updateSize, totalItems, totalPrice }
 })

@@ -1,8 +1,9 @@
 <script setup>
   import {useRoute} from "vue-router";
-  import {reactive, ref} from "vue";
+  import {reactive, ref, watch} from "vue";
   import TheProduct from "@/components/TheProduct.vue";
   import {useCartStore} from "@/store/use-cart-client.js";
+  import {message} from "ant-design-vue";
 
   const route = useRoute();
   const cartStore = useCartStore();
@@ -26,7 +27,6 @@
     total_quantity: undefined,
     quantity: 1,
     size_id: undefined,
-    size_name: ""
   });
   const image_path = ref();
   const product_sizes = reactive({
@@ -35,14 +35,15 @@
       product_name: "",
     },
     sizes: [],
-    quantity: undefined,
+    quantity: [],
   });
   const selected_size = ref(0);
+  const selected_size_index = ref(0);
   const quantity = ref(1);
   const products = ref([]);
-
-  const getProductbyID = () =>{
-    axios.get(`http://127.0.0.1:8000/product/${route.params.id}`)
+  const productId = ref(route.params.id);
+  const getProductbyID = async (id) =>{
+    axios.get(`http://127.0.0.1:8000/product/${id}`)
     .then(function (response) {
       product.id = response.data.id;
       product.product_name = response.data.product_name
@@ -71,7 +72,7 @@
         sort_by: "",
         sort_order: "asc"
       };
-      getProduct(options)
+      getProduct(options);
     })
     .catch(function (error) {
       console.log(error);
@@ -92,27 +93,27 @@
     image_path.value = path;
   };
 
-  const getProductSize = () => {
-    axios.get(`http://127.0.0.1:8000/inventory/${route.params.id}`)
+  const getProductSize = async (id) => {
+    axios.get(`http://127.0.0.1:8000/inventory/${id}`)
     .then(function (response) {
       product_sizes.product = response.data.product;
       product_sizes.sizes = response.data.sizes;
       product_sizes.quantity = response.data.quantity;
-      cart_product.total_quantity = response.data.quantity;
     })
     .catch(function (error) {
       console.log(error);
     })
   };
 
-  const selectSize = (size_id, size_name) => {
-    selected_size.value = size_id
+  const selectSize = (size_id, index) => {
+    selected_size.value = size_id;
+    selected_size_index.value = index;
     cart_product.size_id = size_id;
-    cart_product.size_name = size_name
+    cart_product.total_quantity = product_sizes.quantity[index];
   };
 
   const upQuantity = () => {
-    if (quantity.value < product_sizes.quantity)
+    if (quantity.value < product_sizes.quantity[selected_size_index.value])
     {
       quantity.value += 1;
     }
@@ -125,13 +126,26 @@
   };
 
   const addToCart = () => {
-    cart_product.quantity = quantity.value;
-    cartStore.addProduct(cart_product)
+    if (selected_size.value !== 0){
+      cart_product.quantity = quantity.value;
+      cartStore.addProduct(cart_product);
+    } else{
+      message.warn("Bạn cần chọn size của sản phẩm!");
+    }
   }
 
-  getProductbyID();
-  getProductSize();
+  getProductbyID(productId.value);
+  getProductSize(productId.value);
 
+  watch(() => route.params.id, async (newId) => {
+    productId.value = newId;
+    selected_size.value = 0;
+    selected_size_index.value = 0;
+    quantity.value = 1;
+    await getProductbyID(newId);
+    await getProductSize(newId);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  })
 </script>
 
 <template>
@@ -176,8 +190,8 @@
                 <h4 class="widget-title">Size</h4>
                 <div class="shop-size-list">
                   <ul>
-                    <li v-for="size in product_sizes.sizes">
-                      <a :class="{ active: size.id === selected_size }" @click.prevent="selectSize(size.id, size.size_name)">
+                    <li v-for="(size, index) in product_sizes.sizes">
+                      <a :class="{ active: size.id === selected_size }" @click.prevent="selectSize(size.id, index)">
                         {{size.size_name}}
                       </a>
                     </li>

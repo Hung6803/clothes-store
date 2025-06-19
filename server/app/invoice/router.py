@@ -2,8 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
 from app import database
-from app.account.model import Account
-from app.account.oauth2 import get_current_user
+from app.account.oauth2 import admin_required
 from app.invoice import schema, services
 
 router = APIRouter(tags=['Invoice'], prefix='/invoice')
@@ -20,7 +19,7 @@ async def create_invoice(request: schema.InvoiceCreate, db: Session = Depends(da
     return new_invoice
 
 
-@router.put('/edit/status', response_class=Response)
+@router.put('/edit/status', response_class=Response, dependencies=[Depends(admin_required)])
 async def edit_status(request: List[schema.InvoiceUpdate], db: Session = Depends(database.get_db)):
     return services.edit_status(request, db)
 

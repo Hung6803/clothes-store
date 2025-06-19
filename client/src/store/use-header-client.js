@@ -5,8 +5,8 @@ export const useHeader = defineStore('headerId', {
     page: 'A'
   }),
     actions: {
-        onSelectPage(page) {
-            this.page = page;
-        }
+      onSelectPage(page) {
+          this.page = page;
+      }
     }
-});
+    });

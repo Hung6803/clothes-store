@@ -3,9 +3,10 @@
   import {useCartStore} from "@/store/use-cart-client.js";
 
   const provinces = ref([]);
-  const districts = ref();
-  const wards = ref();
+  const districts = ref([]);
+  const wards = ref([]);
   const products = useCartStore();
+  const payment_method = ref('cod');
 
   const address = reactive({
     province: { code: "", name: "" },
@@ -28,7 +29,7 @@
     customer_id: undefined,
   });
 
-  const createCustomer = () =>{
+  const createCustomer = () => {
     customer.address = customer.address + ", " + address.ward.name + ", " + address.district.name + ", " + address.province.name;
      axios.post("http://127.0.0.1:8000/customer/createnoaccount", customer)
     .then(function (response) {
@@ -42,33 +43,39 @@
   const createInvoice = (customer_id) =>{
     invoice.address = customer.address;
     invoice.customer_id = customer_id;
-    invoice.payment_type = "Trực tiếp"
+    invoice.payment_type = payment_method.value;
+    console.log(invoice);
     axios.post("http://127.0.0.1:8000/invoice/create", invoice)
     .then(function (response) {
-      createInvoiceDetail()
+      createInvoiceDetail(response.data.id)
     })
     .catch(function (error) {
       console.log(error);
     });
   };
 
-  const createInvoiceDetail = () =>{
-    console.log(products.selectedProducts);
+  const createInvoiceDetail = (invoice_id) =>{
     products.selectedProducts.forEach(product => {
-      axios.post("http://127.0.0.1:8000/invoice_details/add", invoice)
+      const add_product = reactive({
+        product_id: product.id,
+        size_id: product.size_id,
+        invoice_id: invoice_id,
+        quantity: product.quantity,
+        discount: product.discount,
+        price: product.price,
+      });
+      axios.post("http://127.0.0.1:8000/invoice_details/add", add_product)
       .then(function (response) {
-        createInvoiceDetail()
+
       })
       .catch(function (error) {
         console.log(error);
       });
     })
+    if (payment_method.value === "cod") {
+
+    }
   }
-  const submitForm = () => {
-    customer.address = customer.address + ", " + address.ward.name + ", " + address.district.name + ", " + address.province.name;
-    console.log('Customer data:', customer);
-    alert('Form submitted successfully!');
-  };
 
   const getProvinces = () => {
     axios.get('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1')
@@ -136,7 +143,7 @@
           <div class="col-lg-7">
             <div class="checkout-wrap">
               <div class="checkout-top">
-                <h5 class="title">Thông tin đơn hàng</h5>
+                <h5 class="title">Thông tin người nhận</h5>
                 <a href="" class="back"><router-link :to="{ name: 'public-cart' }">
                   <font-awesome-icon :icon="['fas', 'arrow-left']" />  Giỏ hàng
                 </router-link></a>
@@ -147,12 +154,8 @@
                     <div class="form-grp">
                       <label for="fName">HỌ VÀ TÊN<span>*</span></label>
                       <input type="text" v-model="customer.name">
-                    </div>
-                  </div>
-                  <div class="col-12">
-                    <div class="form-grp">
-                      <label for="address">ĐỊA CHỈ <span>*</span></label>
-                      <input type="text" v-model="customer.address">
+                      <div class="w-100"></div>
+                      <small class="text-danger"></small>
                     </div>
                   </div>
                   <div class="col-12">
@@ -190,6 +193,12 @@
                   </div>
                   <div class="col-12">
                     <div class="form-grp">
+                      <label for="address">ĐỊA CHỈ <span>*</span></label>
+                      <input type="text" v-model="customer.address">
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-grp">
                       <label for="phone">SỐ ĐIỆN THOẠI <span>*</span></label>
                       <input type="text" v-model="customer.phone_number">
                     </div>
@@ -200,7 +209,7 @@
           </div>
           <div class="col-lg-5 col-md-8">
             <aside class="checkout-sidebar">
-              <h6 class="title">THÔNG TIN GIỎ HÀNG</h6>
+              <h6 class="title">THÔNG TIN ĐƠN HÀNG</h6>
               <div class="shop-cart-widget">
                 <form @submit.prevent="createCustomer">
                   <ul>
@@ -208,15 +217,32 @@
                   </ul>
                   <div class="payment-method-info">
                     <div class="paypal-method-flex">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck5">
-                        <label class="custom-control-label" for="customCheck5">Thanh toán khi nhận hàng</label>
+                      <div class="custom-control custom-radio">
+                        <input
+                          type="radio"
+                          class="custom-radio-input"
+                          id="radio-cod"
+                          value="cod"
+                          v-model="payment_method"
+                        >
+                        <label class="custom-radio-label" for="radio-cod">
+                          Thanh toán khi nhận hàng
+                        </label>
                       </div>
                     </div>
+
                     <div class="paypal-method-flex">
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck6">
-                        <label class="custom-control-label" for="customCheck6">Thanh toán qua ví MoMo</label>
+                      <div class="custom-control custom-radio">
+                        <input
+                          type="radio"
+                          class="custom-radio-input"
+                          id="radio-momo"
+                          value="momo"
+                          v-model="payment_method"
+                        >
+                        <label class="custom-radio-label" for="radio-momo">
+                          Thanh toán qua ví MoMo
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -235,5 +261,64 @@
 <style scoped>
   .breadcrumb-bg {
     background-image: url('@/assets/img/slider/third_slider_bg.jpg');
+  }
+
+  .custom-radio {
+    position: relative;
+    padding-left: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .custom-radio-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    left: 0;
+    z-index: -1;
+    width: 1rem;
+    height: 1.25rem;
+  }
+
+  .custom-radio-label{
+    text-transform: capitalize;
+    color: #544842;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .custom-radio-label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #676565;
+    border-radius: 50%;
+    background-color: white;
+    transition: background-color 0.3s, border-color 0.3s;
+    box-sizing: border-box;
+  }
+
+  .custom-radio-input:checked + .custom-radio-label::before {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  .custom-radio-input:checked + .custom-radio-label::after {
+    background-color: #ff5400;
+    border-color: #ff5400;
   }
 </style>

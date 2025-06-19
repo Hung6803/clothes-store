@@ -12,7 +12,8 @@
     size_name: "",
   });
   const createSize = () =>{
-    axios.post("http://127.0.0.1:8000/size/create", size)
+    axios.post("http://127.0.0.1:8000/size/create", size,{
+    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
         message.success("Tạo mới thành công!");
@@ -22,7 +23,7 @@
     .catch(function (error) {
       console.log(error);
     });
-    };
+  };
 
 </script>
 

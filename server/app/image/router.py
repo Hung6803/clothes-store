@@ -1,12 +1,10 @@
-import os
 from typing import List
 from fastapi import APIRouter, Depends, Response, status, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from starlette.responses import FileResponse
 
-from app import database, config
-from app.account.model import Account
-from app.account.oauth2 import get_current_user
+from app import database
+from app.account.oauth2 import admin_required
 from app.image import schema, services
 
 router = APIRouter(tags=['Product Image'], prefix='/image')
@@ -30,8 +28,8 @@ async def get_all_product_image(product_id: int, db: Session = Depends(database.
     return services.get_all_product_image(product_id, db)
 
 
-@router.put('/edit/{product_id}', response_class=Response)
-async def edit_image(product_id: int, request: List[UploadFile] = File(...), old_image: List[str] = Form(...), db: Session = Depends(database.get_db)):
+@router.put('/edit/{product_id}', response_class=Response, dependencies=[Depends(admin_required)])
+async def edit_image(product_id: int, request: List[UploadFile] = File(None), old_image: List[str] = Form(...), db: Session = Depends(database.get_db)):
     return await services.edit_image(product_id, request, old_image, db)
 
 
@@ -40,6 +38,6 @@ async def get_product_image_first(product_id: int, db: Session = Depends(databas
     return services.get_product_image_first(product_id, db)
 
 
-@router.delete('/{product_id}', response_class=Response)
+@router.delete('/{product_id}', response_class=Response, dependencies=[Depends(admin_required)])
 async def delete_image(product_id: int, db: Session = Depends(database.get_db)):
     return services.delete_image(product_id, db)

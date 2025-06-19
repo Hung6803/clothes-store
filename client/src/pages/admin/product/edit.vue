@@ -42,9 +42,6 @@
         status: "done",
         url: `${baseURL}${image.image_path}`,
       }));
-
-      console.log(response.data)
-      console.log(fileList.value)
     })
     .catch(function (error) {
       console.log(error);
@@ -56,7 +53,6 @@
     headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
-        console.log(response.data);
         editFile(response.data.id)
       }
     })
@@ -108,7 +104,6 @@
       info.fileList = info.fileList.slice(-6)
     }
     fileList.value = [...info.fileList]
-    console.log(fileList.value)
   };
 
   const handleCancel = () => {
@@ -126,26 +121,27 @@
   };
 
   const editFile = async () => {
-    if (fileList.value.length === 0) return
+    const formData = new FormData();
 
-    const formData = new FormData()
     fileList.value.forEach((file) => {
-      if (file.originFileObj) {
-        formData.append('request', file.originFileObj);
-      }else{
+      if (!file.originFileObj) {
         formData.append('old_image', file.name);
       }
-    })
-    console.log(formData)
+      else {
+        formData.append('request', file.originFileObj);
+      }
+    });
+
     axios.put(`http://localhost:8000/image/edit/${route.params.id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       },
     })
     .then(function (response){
       if (response) {
-        // message.success("Sửa thông tin thành công!");
-        // router.push({name: 'admin-product'});
+        message.success("Sửa thông tin thành công!");
+        router.push({name: 'admin-product'});
       }
     })
     .catch(function (error) {

@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 
 from app.invoice_details import model
+from app.inventory.services import update_quantity
 
 
 def get_product_by_invoice(invoice_id, database):
@@ -13,9 +14,10 @@ def add_product_to_invoice(request, database):
                                        size_id=request.size_id, quantity=request.quantity, discount=request.discount,
                                        price=request.price)
     database.add(new_product)
+
+    update_quantity(new_product.product_id, new_product.size_id, new_product.quantity, database)
     database.commit()
     database.refresh(new_product)
-
     return {'msg': 'success'}
 
 

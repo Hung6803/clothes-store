@@ -20,7 +20,7 @@ async def create_brand(request: schema.Brand, database) -> model.Brand:
     return new_brand
 
 
-def get_brand_by_id(brand_id, database) -> Optional[model.Brand]:
+def get_brand_by_id(brand_id, database):
     brand_info = database.query(model.Brand).get(int(brand_id))
     return brand_info
 
@@ -30,6 +30,3 @@ def delete_brand(brand_id, database):
     database.commit()
 
 
-def get_limit_brand(limit, database):
-    brands = database.query(model.Brand).limit(limit).all()
-    return brands

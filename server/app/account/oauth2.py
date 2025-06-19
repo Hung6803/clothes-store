@@ -13,3 +13,9 @@ def get_current_user(data: str = Depends(oauth2_scheme)):
     )
 
     return token.verify_token(data, credentials_exception)
+
+
+def admin_required(current_user=Depends(get_current_user)):
+    if not current_user.role:
+        raise HTTPException(status_code=403, detail="Not authorized as admin")
+    return current_user

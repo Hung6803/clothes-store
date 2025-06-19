@@ -28,7 +28,8 @@ async def edit_image(product_id, request, old_image, database):
             os.remove(file_path)
             delete_image(image.image_path, database)
 
-    await upload_image(request, product_id, database)
+    if request:
+        await upload_image(request, product_id, database)
 
 
 async def upload_image(list_image, product_id, database):

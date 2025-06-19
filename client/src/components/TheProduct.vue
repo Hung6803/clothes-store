@@ -7,7 +7,7 @@
         </router-link>
       </div>
       <div class="content">
-        <h5><router-link :to="{ name: 'public-shop-product', params: { id: product.id } }">{{ product.product_name }}</router-link></h5>
+        <h5><router-link :to="{ name: 'public-shop-product', params: { id: product.id }}">{{ product.product_name }}</router-link></h5>
         <span class="price" v-if="product.discount === 0">{{ product.price }}.000 VND</span>
         <span class="del-price" v-if="product.discount !== 0">{{ product.price }}.000 VND</span>
         <span class="price" v-if="product.discount !== 0">{{ product.price * (1 - product.discount / 100) }}.000 VND</span>

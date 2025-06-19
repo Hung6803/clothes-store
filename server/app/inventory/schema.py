@@ -25,7 +25,7 @@ class DisplayInventory(BaseModel):
 class DisplayProductSize(BaseModel):
     product: ProductName
     sizes: List[DisplaySize]
-    quantity: int
+    quantity: List[int]
 
     class Config:
         from_attributes = True

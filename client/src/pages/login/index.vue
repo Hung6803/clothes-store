@@ -92,7 +92,10 @@ export default defineComponent({
           params.append('password', formState.password);
         axios.post("http://127.0.0.1:8000/account/login", params)
             .then(function (response) {
-              // localStorage.setItem('token', response.data.access_token)
+              const token = response.data.access_token
+              const payload = JSON.parse(atob(token.split('.')[1]))
+              localStorage.setItem('token', token)
+              localStorage.setItem('role', payload.role)
               message.success("Đăng nhập thành công!");
               router.push({name: 'public-homepage'});
             })

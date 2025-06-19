@@ -49,9 +49,14 @@ const client = [
                 component: () => import("../pages/public/shop/shopping_cart.vue"),
             },
             {
-                path:"payment",
-                name: "public-payment",
-                component: () => import("../pages/public/shop/payment.vue"),
+                path:"order",
+                name: "public-order",
+                component: () => import("../pages/public/shop/order.vue"),
+            },
+            {
+                path:"success",
+                name: "public-successful_order",
+                component: () => import("../pages/public/shop/successful_order.vue"),
             },
         ]
     }

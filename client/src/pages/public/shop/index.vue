@@ -264,8 +264,8 @@
 </template>
 
 <style scoped>
-.breadcrumb-bg {
-  background-image: url('@/assets/img/slider/third_slider_bg.jpg');
-}
+  .breadcrumb-bg {
+    background-image: url('@/assets/img/slider/third_slider_bg.jpg');
+  }
 
 </style>

@@ -100,7 +100,7 @@
                         <li>
                           <div class="checkout-link">
                             <router-link :to="{ name: 'public-cart'}">Giỏ hàng</router-link>
-                            <router-link class="black-color" :to="{ name: 'public-payment'}">Thanh toán</router-link>
+                            <router-link class="black-color" :to="{ name: 'public-order'}">Thanh toán</router-link>
                           </div>
                         </li>
                       </ul>
@@ -120,10 +120,10 @@
                 </div>
                 <div class="menu-outer">
                   <ul class="navigation">
-                    <li class="active"><router-link :to="{ name: 'public-homepage' }">Trang chủ</router-link></li>
-                    <li class="menu-item-has-children"><router-link :to="{ name: 'public-shop' }">Sản phẩm</router-link></li>
-                    <li class="active"><router-link :to="{ name: 'public-about-us' }">Về chúng tôi</router-link></li>
-                    <li><router-link :to="{ name: 'public-contact' }">Liên hệ</router-link></li>
+                    <li :class="{ active: store.page === 'A' }" @click="store.onSelectPage('A')"><router-link :to="{ name: 'public-homepage' }">Trang chủ</router-link></li>
+                    <li :class="{ active: store.page === 'B' }" @click="store.onSelectPage('B')"><router-link :to="{ name: 'public-shop' }">Sản phẩm</router-link></li>
+                    <li :class="{ active: store.page === 'C' }" @click="store.onSelectPage('C')"><router-link :to="{ name: 'public-about-us' }">Về chúng tôi</router-link></li>
+                    <li :class="{ active: store.page === 'D' }" @click="store.onSelectPage('D')"><router-link :to="{ name: 'public-contact' }">Liên hệ</router-link></li>
                   </ul>
                 </div>
               </nav>

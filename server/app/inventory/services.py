@@ -40,10 +40,17 @@ def get_inventory_by_product_id(product_id, database):
             "id": product_size_db[0].product.id,
             "product_name": product_size_db[0].product.product_name,
         },
-        "quantity": product_size_db[0].quantity,
+        "quantity": [],
         "sizes": [],
     }
     for product_size in product_size_db:
         product_sizes["sizes"].append(product_size.size)
+        product_sizes["quantity"].append(product_size.quantity)
 
     return product_sizes
+
+
+def update_quantity(product_id, size_id, quantity, database):
+    (database.query(model.Inventory).filter(model.Inventory.product_id == product_id
+                                            and model.Inventory.size_id == size_id)
+     .update({model.Inventory.quantity: model.Inventory.quantity - quantity}))

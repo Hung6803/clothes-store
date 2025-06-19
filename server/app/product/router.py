@@ -1,13 +1,9 @@
-import os
 from typing import List
-from fastapi import APIRouter, Depends, Response, status, UploadFile, File
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
-from starlette import schemas
-from starlette.responses import FileResponse
 
-from app import database, config
-from app.account.model import Account
-from app.account.oauth2 import get_current_user
+from app import database
+from app.account.oauth2 import admin_required
 from app.product import schema, services
 
 router = APIRouter(tags=['Product'], prefix='/product')
@@ -38,13 +34,13 @@ async def get_product_name(db: Session = Depends(database.get_db)):
     return services.get_product_name(db)
 
 
-@router.post('/create', status_code=status.HTTP_201_CREATED)
+@router.post('/create', status_code=status.HTTP_201_CREATED, dependencies=[Depends(admin_required)])
 async def create_product(request: schema.Product, db: Session = Depends(database.get_db)):
     new_product = services.create_product(request=request, database=db)
     return new_product
 
 
-@router.put('/edit/{product_id}', response_class=Response)
+@router.put('/edit/{product_id}', response_class=Response, dependencies=[Depends(admin_required)])
 async def edit_product(product_id: int, request: schema.Product, db: Session = Depends(database.get_db)):
     return services.edit_product(product_id, request, db)
 
@@ -54,6 +50,6 @@ async def get_product_by_id(product_id: int, db: Session = Depends(database.get_
     return services.get_product_by_id(product_id, db)
 
 
-@router.delete('/{product_id}', response_class=Response)
+@router.delete('/{product_id}', response_class=Response, dependencies=[Depends(admin_required)])
 async def delete_product(product_id: int, db: Session = Depends(database.get_db)):
     return services.delete_product(product_id, db)

@@ -26,7 +26,8 @@
     })
   }
   const editSize = () =>{
-    axios.put(`http://127.0.0.1:8000/size/edit/${route.params.id}`, size)
+    axios.put(`http://127.0.0.1:8000/size/edit/${route.params.id}`, size,{
+    headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}})
     .then(function (response) {
       if (response) {
         message.success("Sửa thông tin thành công!");
